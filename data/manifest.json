@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Synapse",
+  "version": "1.0",
+  "description": "Interact with Firefox from Synapse.",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": ["tabs", "nativeMessaging"],
+  "applications": {
+    "gecko": {
+      "id": "synapse@paysonwallach.com"
+    }
+  },
+  "icons": {
+    "48": "icon.svg",
+    "96": "icon.svg"
+  }
+}
