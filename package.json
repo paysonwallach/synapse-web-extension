@@ -9,7 +9,7 @@
     "format": "run-p format:*",
     "format:js": "prettier --write .",
     "format:package.json": "prettier-package-json --write",
-    "prerelease": "node scripts/build.js",
+    "prerelease": "scrivano",
     "release": "standard-version"
   },
   "dependencies": {
@@ -20,11 +20,11 @@
     "@commitlint/config-conventional": "^11.0.0",
     "husky": "^4.3.0",
     "npm-run-all": "^4.1.5",
-    "nunjucks": "^3.2.2",
-    "prettier": "^2.1.2",
-    "standard-version": "^9.0.0",
-    "webpack": "^5.0.0",
-    "webpack-cli": "^4.0.0"
+    "prettier": "2.2.1",
+    "scrivano": "^0.1.0",
+    "standard-version": "^8.0.0",
+    "webpack": "^4.44.0",
+    "webpack-cli": "^3.3.12"
   },
   "husky": {
     "hooks": {
