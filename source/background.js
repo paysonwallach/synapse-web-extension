@@ -1,114 +1,69 @@
+/*
+ * Copyright (c) 2020 Payson Wallach
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 "use strict";
 
 (function () {
+  var browser = require("webextension-polyfill");
+
+  var port;
+
   const Constants = {
-    HOST_CONNECTOR: "com.paysonwallach.synapse_firefox.connector",
+    HOST_CONNECTOR: "com.paysonwallach.synapse.plugins.web.bridge",
   };
 
-  const MessageType = {
-    COMMAND: "command",
-    QUERY: "query",
+  const connectToHost = () => {
+    port = browser.runtime.connectNative(Constants.HOST_CONNECTOR);
+
+    port.postMessage(); // start host bridge
   };
 
-  var sizeof = require("object-sizeof");
+  connectToHost();
 
-  var port = browser.runtime.connectNative(Constants.HOST_CONNECTOR);
-  var results = [];
-
-  port.onMessage.addListener((message) => {
-    console.log(message);
-    switch (message.type) {
-      case MessageType.QUERY:
-        var bookmarks_results = browser.bookmarks.search({
-          query: message.body,
-        });
-        var history_results = browser.history.search({ text: message.body });
-
-        Promise.all([history_results, bookmarks_results])
-          .then((values) => {
-            values.forEach((value) => {
-              results.push(
-                ...value
-                  .filter(
-                    (i) =>
-                      i.url &&
-                      !results.includes(i.url) &&
-                      sizeof({
-                        title:
-                          i.title != null ? i.title : new URL(i.url).hostname,
-                        description: null,
-                        url: i.url,
-                      }) < 1024 // max size of a message is 1 Mb
-                  )
-                  .sort((a, b) =>
-                    a.visitCount < b.visitCount
-                      ? 1
-                      : a.visitCount === b.visitCount
-                      ? a.lastVisitTime < b.lastVisitTime
-                        ? 1
-                        : -1
-                      : -1
-                  )
-              );
-            });
-            var results_size = 0;
-            port.postMessage(results.length);
-            results.forEach((result) => {
-              var page_match = {
-                title:
-                  result.title != ""
-                    ? result.title
-                    : new URL(result.url).hostname,
-                description: null,
-                url: result.url,
-              };
-              if ((results_size += sizeof(page_match)) < 65536) {
-                // max pipe capacity on unix
-                port.postMessage(page_match);
-              }
-            });
-            results.length = 0;
-          })
-          .catch((error) => {
-            console.log(error);
-            port.postMessage(results);
-          });
-
-        break;
-      case MessageType.COMMAND:
-        var tabs_result = browser.tabs.query({ url: message.body });
-        var current_window = browser.windows.getCurrent();
-
-        tabs_result.then(
-          (results) => {
-            if (results.length != 0) {
-              browser.tabs.update(results[0].id, { active: true });
-
-              browser.windows.update(results[0].windowId, { focused: true });
-            } else {
-              browser.tabs.create({
-                active: true,
-                url: message.body,
-              });
-
-              current_window.then((result) => {
-                browser.windows.update(result.id, { focused: true });
-              });
-            }
-          },
-          (error) => {
-            console.log(
-              `error retrieving tab with url '${message.body}': ${error}`
-            );
-          }
-        );
-
-        results.length = 0;
-        break;
-      default:
-        console.log(`unknown option: ${message.type}`);
-    }
+  port.onDisconnect.addListener(() => {
+    port = connectToHost();
   });
 
-  port.postMessage(); // start host connector
+  port.onMessage.addListener((message) => {
+    var tabsResults = browser.tabs.query({ url: message.body });
+    var current_window = browser.windows.getCurrent();
+
+    tabsResults.then(
+      (results) => {
+        if (results.length != 0) {
+          browser.tabs.update(results[0].id, { active: true });
+
+          browser.windows.update(results[0].windowId, { focused: true });
+        } else {
+          browser.tabs.create({
+            active: true,
+            url: message.body,
+          });
+
+          current_window.then((result) => {
+            browser.windows.update(result.id, { focused: true });
+          });
+        }
+      },
+      (error) => {
+        console.log(
+          `error retrieving tab with url '${message.body}': ${error}`
+        );
+      }
+    );
+  });
 })();
