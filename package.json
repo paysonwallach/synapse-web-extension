@@ -52,7 +52,7 @@
     "webpack-cli": "^4.3.0",
     "wext-manifest-loader": "^2.2.1",
     "wext-manifest-webpack-plugin": "^1.2.1",
-    "zip-webpack-plugin": "^3.0.0"
+    "zip-webpack-plugin": "^4.0.0"
   },
   "husky": {
     "hooks": {
