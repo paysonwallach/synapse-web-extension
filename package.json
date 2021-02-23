@@ -34,8 +34,8 @@
     "webextension-polyfill": "^0.7.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.0.0",
-    "@commitlint/config-conventional": "^12.0.0",
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.0.1",
     "chrome-webstore-upload-cli": "^1.2.1",
     "copy-webpack-plugin": "^6.4.1",
     "cross-env": "^7.0.3",
@@ -48,7 +48,7 @@
     "standard-version": "^9.1.1",
     "terser-webpack-plugin": "^5.1.1",
     "web-ext": "^5.5.0",
-    "webpack": "^5.24.0",
+    "webpack": "^5.24.1",
     "webpack-cli": "^4.5.0",
     "wext-manifest-loader": "^2.3.0",
     "wext-manifest-webpack-plugin": "^1.2.1",
