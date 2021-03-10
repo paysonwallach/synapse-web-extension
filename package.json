@@ -47,7 +47,7 @@
     "size-plugin": "^3.0.0",
     "standard-version": "^9.1.1",
     "terser-webpack-plugin": "^5.1.1",
-    "web-ext": "^5.5.0",
+    "web-ext": "^6.0.0",
     "webpack": "^5.24.4",
     "webpack-cli": "^4.5.0",
     "wext-manifest-loader": "^2.3.0",
