@@ -36,8 +36,8 @@
     "webextension-polyfill": "^0.8.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.1.1",
-    "@commitlint/config-conventional": "^12.1.1",
+    "@commitlint/cli": "^12.1.2",
+    "@commitlint/config-conventional": "^12.1.2",
     "chrome-webstore-upload-cli": "^1.2.1",
     "copy-webpack-plugin": "^8.1.1",
     "cross-env": "^7.0.3",
