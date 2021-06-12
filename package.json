@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "synapse-web-extension",
+  "version": "0.2.0",
   "description": "Interact with your browser from Synapse.",
   "license": "GPL-3.0",
   "author": "Payson Wallach <payson@paysonwallach.com>",
@@ -12,7 +13,6 @@
   "bugs": {
     "url": "https://github.com/paysonwallach/synapse-web-extension/issues"
   },
-  "version": "0.2.0",
   "scripts": {
     "build": "run-p build:chrome build:firefox build:opera",
     "build:chrome": "cross-env NODE_ENV=production cross-env TARGET_BROWSER=chrome webpack",
@@ -24,6 +24,7 @@
     "format": "run-p format:*",
     "format:js": "prettier --write .",
     "format:package.json": "prettier-package-json --write",
+    "prepare": "husky install",
     "prerelease": "scrivano",
     "release": "run-s build standard-version release:*",
     "release:amo": "web-ext-submit --source-dir distribution/firefox",
@@ -54,12 +55,6 @@
     "wext-manifest-loader": "^2.3.0",
     "wext-manifest-webpack-plugin": "^1.2.1",
     "zip-webpack-plugin": "^4.0.1"
-  },
-  "husky": {
-    "hooks": {
-      "precommit": "npm run format",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   },
   "standard-version": {
     "scripts": {
