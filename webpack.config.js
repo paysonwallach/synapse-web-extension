@@ -10,17 +10,6 @@ const destPath = path.join(__dirname, "distribution");
 const sourcePath = path.join(__dirname, "source");
 const targetBrowser = process.env.TARGET_BROWSER;
 
-const getExtensionFileType = (browser) => {
-  switch (browser) {
-    case "opera":
-      return "crx";
-    case "firefox":
-      return "xpi";
-    default:
-      return "zip";
-  }
-};
-
 module.exports = {
   devtool: false, // https://github.com/webpack/webpack/issues/1194#issuecomment-560382342
   stats: {
