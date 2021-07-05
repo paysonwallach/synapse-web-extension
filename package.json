@@ -46,7 +46,7 @@
     "prettier": "^2.3.2",
     "prettier-package-json": "^2.6.0",
     "scrivano": "^0.1.0",
-    "size-plugin": "^3.0.0",
+    "size-plugin": "^2.0.2",
     "standard-version": "^9.3.0",
     "terser-webpack-plugin": "^5.1.4",
     "web-ext": "^6.2.0",
